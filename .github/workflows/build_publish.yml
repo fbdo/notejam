@@ -50,4 +50,4 @@ jobs:
         run: |
           mkdir -p spring/target
           mv artifact/app.jar spring/target
-          mvn -f spring/pom.xml com.google.cloud.tools:jib-maven-plugin:build -Dimage=fbdo/notejam
+          docker build -t fbdo/notejam spring
