@@ -12,6 +12,12 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 8
+      - uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
       - run: mvn -f spring/pom.xml compile
   build:
     runs-on: ubuntu-latest
@@ -46,15 +52,13 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: artifact
-      - name: Move built artifact to target folder
+      - name: Publish to registry
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: |
           mkdir -p spring/target
           mv artifact/app.jar spring/target
-      - name: Publish to registry
-        uses: HurricanKai/Publish-Docker-Github-Action@master
-        with:
-          name: fbdo/notejam
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          dockerfile: spring/Dockerfile
-          tagging: true
+          docker build -t fbdo/notejam:latest spring
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+          docker push fbdo/notejam:latest
