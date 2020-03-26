@@ -12,7 +12,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 8
-      - run: mvn -f github-actions-java-maven/pom.xml clean compile
+      - run: mvn -f spring/pom.xml compile
   build:
     runs-on: ubuntu-latest
     needs: compile
@@ -30,7 +30,7 @@ jobs:
         with:
           java-version: 8
       - name: Test and package project
-        run: mvn -f github-actions-java-maven/pom.xml package
+        run: mvn -f spring/pom.xml package
   publish_docker:
     runs-on: ubuntu-latest
     needs: build
@@ -38,4 +38,4 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Build Docker container
-        run: mvn -f github-actions-java-maven/pom.xml com.google.cloud.tools:jib-maven-plugin:build -Dimage=fbdo/notejam
+        run: mvn -f spring/pom.xml com.google.cloud.tools:jib-maven-plugin:build -Dimage=fbdo/notejam
