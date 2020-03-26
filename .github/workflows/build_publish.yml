@@ -5,7 +5,7 @@ on: [push]
 jobs:
   compile:
     runs-on: ubuntu-latest
-    name: Java compile
+    name: Compile
     steps:
       - uses: actions/checkout@master
       - name: Setup java
@@ -16,7 +16,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     needs: compile
-    name: Build Maven project
+    name: Test and package
     steps:
       - uses: actions/checkout@v1
       - uses: actions/cache@v1
