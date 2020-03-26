@@ -51,3 +51,9 @@ jobs:
           mkdir -p spring/target
           mv artifact/app.jar spring/target
           docker build -t fbdo/notejam spring
+      - name: Publish to registry
+        uses: HurricanKai/Publish-Docker-Github-Action@master
+        with:
+          name: fbdo/notejam
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
