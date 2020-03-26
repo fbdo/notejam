@@ -1,0 +1,17 @@
+apiVersion: v1
+appVersion: "0.1.0"
+description: Notejam application implemented using Spring framework.
+name: notejam
+version: 0.1.0
+keywords:
+  - notejam
+  - java
+  - spring
+  - http
+  - web
+  - application
+home: https://github.com/komarserjio/notejam
+sources:
+  - https://github.com/komarserjio/notejam
+maintainers: []
+icon: https://spring.io/images/spring-logo-fc4350c59999bb62c468361537212419.svg

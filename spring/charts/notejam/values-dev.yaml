@@ -1,0 +1,11 @@
+image:
+  repository: fbdo/notejam
+  tag: latest
+  pullPolicy: Always
+
+labels:
+  env: "dev"
+  cluster: "dev"
+
+externalDatabase:
+  enabled: false

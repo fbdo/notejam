@@ -1,0 +1,34 @@
+image:
+  registry: docker.io
+  repository: fbdo/notejam
+  tag: 0.1.0
+  pullPolicy: IfNotPresent
+
+labels:
+  env: "prod"
+  cluster: "notejam"
+
+service:
+  port: 80
+  targetPort: 8080
+  type: LoadBalancer
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 2000Mi
+  requests:
+    memory: 512Mi
+    cpu: 800m
+
+hpa:
+  cpuAverageUtilization: 65
+  memoryTargetAverageValue: "800Mi"
+
+externalDatabase:
+  enabled: true
+  host: localhost
+  user: notejam
+  password: ""
+  database: notejam
+  port: 3306
