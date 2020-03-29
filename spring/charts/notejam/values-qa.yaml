@@ -1,0 +1,8 @@
+image:
+  repository: fbdo/notejam
+
+labels:
+  env: "qa"
+
+externalDatabase:
+  enabled: true
