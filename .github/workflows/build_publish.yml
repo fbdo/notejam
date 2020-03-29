@@ -39,10 +39,13 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          GITHUB_REF_NAME: $(echo $GITHUB_REF | cut -d'/' -f 3)
+          SUFFIX: $([[ "develop" = "$GITHUB_REF_NAME" ]] && echo "latest" || echo "$GITHUB_REF_NAME")
         run: |
+          echo "GITHUB_REF_NAME: $GITHUB_REF_NAME, SUFFIX: $SUFFIX"
           mkdir -p spring/target
           mv artifact/app.jar spring/target
-          docker build -t fbdo/notejam:latest spring
+          docker build -t fbdo/notejam:latest  spring
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
           docker push fbdo/notejam:latest
   deploy_helm:
@@ -65,4 +68,5 @@ jobs:
           gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
           gcloud container clusters get-credentials notejam --zone=europe-west3-a --project ${{ secrets.GCP_PROJECT_ID }}
           curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+          echo 
           helm upgrade -f spring/charts/notejam/values-dev.yaml notejam spring/charts/notejam --install --namespace=dev
