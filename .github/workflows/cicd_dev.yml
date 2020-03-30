@@ -9,7 +9,7 @@ on:
       - develop
 
 env:
-  RELEASE_VERSION: "latest"
+  RELEASE_VERSION: "dev"
 
 jobs:
   ci:
@@ -51,7 +51,7 @@ jobs:
       - name: Test and package project
         run: mvn -f spring/pom.xml package
       - name: Build Docker image
-        run: docker build -t fbdo/notejam:${{ env.RELEASE_VERSION }} spring
+        run: docker build -t fbdo/notejam:latest -t fbdo/notejam:${{ env.RELEASE_VERSION }} spring
       - name: Publish Docker image to registry
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
