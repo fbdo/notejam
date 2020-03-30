@@ -57,6 +57,11 @@ spec:
                 secretKeyRef:
                   name: mail-secret
                   key: smtp-starttls-enabled
+            - name: EMAIL_SENDER
+              valueFrom:
+                secretKeyRef:
+                  name: mail-secret
+                  key: username
             {{- end }}
             {{- if .Values.externalDatabase.enabled }}
             - name: SPRING_DATASOURCE_PASSWORD
