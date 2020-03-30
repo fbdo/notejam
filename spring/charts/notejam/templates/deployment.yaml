@@ -47,17 +47,12 @@ spec:
                 secretKeyRef:
                   name: mail-secret
                   key: password
-            - name: SPRING_MAIL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mail-secret
-                  key: password
             - name: SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH
               valueFrom:
                 secretKeyRef:
                   name: mail-secret
                   key: smtp-auth
-            - name: SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH
+            - name: SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE
               valueFrom:
                 secretKeyRef:
                   name: mail-secret
