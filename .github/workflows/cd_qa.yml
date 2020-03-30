@@ -1,15 +1,18 @@
 name: Continuous Deployment notejam app QA
 
 on:
-  push:
+  pull_request:
     branches:
       - release/*
       - hotfix/*
+    types:
+      - closed
 
 jobs:
   tag:
     name: Extract build tag
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true # only merged pull requests must trigger this job
     steps:
       - name: Extract version from branch name (for release branches)
         if: startsWith(github.event.pull_request.head.ref, 'release/')
