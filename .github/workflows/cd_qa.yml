@@ -1,4 +1,4 @@
-name: Continuous Deployment notejam app QA
+name: Continuous Deployment QA
 
 on:
   push:
