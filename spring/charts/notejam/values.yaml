@@ -32,3 +32,12 @@ externalDatabase:
   password: ""
   database: notejam
   port: 3306
+
+mail:
+  enabled: false
+  host: smtp.gmail.com
+  username: notejam@notejam.com
+  password: ""
+  port: "587"
+  smtpAuth: "true"
+  smtpStarttlsEnabled: "true"

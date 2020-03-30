@@ -3,7 +3,9 @@ name: Continuous Deployment notejam app Dev
 on:
   pull_request:
     branches:
-      - develop
+      - release/*
+      - hotfix/*
+      - feature/*
     types:
       - closed
 
@@ -13,6 +15,27 @@ jobs:
     name: Deploy helm chart
     if: github.event.pull_request.merged == true # only merged pull requests must trigger this job
     steps:
+      - name: Extract version from branch name (for release branches)
+        if: startsWith(github.event.pull_request.head.ref, 'refs/heads/release/')
+        run: |
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          VERSION=${BRANCH_NAME#refs/heads/release/}
+
+          echo "::set-env name=RELEASE_VERSION::$VERSION"
+      - name: Extract version from branch name (for hotfix branches)
+        if: startsWith(github.event.pull_request.head.ref, 'refs/heads/hotfix/')
+        run: |
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          VERSION=${BRANCH_NAME#refs/heads/hotfix/}
+
+          echo "::set-env name=RELEASE_VERSION::$VERSION"
+      - name: Extract version from branch name (for feature branches)
+        if: startsWith(github.event.pull_request.head.ref, 'refs/heads/feature/')
+        run: |
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          VERSION=${BRANCH_NAME#refs/heads/feature/}
+
+          echo "::set-env name=RELEASE_VERSION::$VERSION"
       - name: "Checkout"
         uses: actions/checkout@master
       - name: "Setup GCP credentials"
@@ -28,4 +51,4 @@ jobs:
           gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
           gcloud container clusters get-credentials notejam --zone=europe-west3-a --project ${{ secrets.GCP_PROJECT_ID }}
           curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
-          helm upgrade -f spring/charts/notejam/values-dev.yaml notejam spring/charts/notejam --install --namespace=dev --set image.tag=latest
+          helm upgrade -f spring/charts/notejam/values-dev.yaml notejam spring/charts/notejam --install --namespace=dev --set image.tag=${{ env.RELEASE_VERSION }} --set mail.username=${{ secrets.SMTP_USERNAME }} --set mail.password=${{ secrets.SMTP_PASSWORD }}

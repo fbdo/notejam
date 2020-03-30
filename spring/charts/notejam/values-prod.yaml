@@ -6,3 +6,6 @@ labels:
 
 externalDatabase:
   enabled: true
+
+mail:
+  enabled: true

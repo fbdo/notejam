@@ -1,8 +1,12 @@
 image:
   repository: fbdo/notejam
+  pullPolicy: Always
 
 labels:
   env: "qa"
 
 externalDatabase:
+  enabled: false
+
+mail:
   enabled: true
