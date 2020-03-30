@@ -5,6 +5,7 @@ on:
     branches:
       - release/*
       - hotfix/*
+      - feature/*
       - develop
 
 env:
@@ -27,6 +28,13 @@ jobs:
         run: |
           BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
           VERSION=${BRANCH_NAME#hotfix/}
+
+          echo "::set-env name=RELEASE_VERSION::$VERSION"
+      - name: Extract version from branch name (for feature branches)
+        if: startsWith(github.event.pull_request.head.ref, 'feature/')
+        run: |
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          VERSION=${BRANCH_NAME#feature/}
 
           echo "::set-env name=RELEASE_VERSION::$VERSION"
   build:

@@ -1,0 +1,40 @@
+name: Create namespaces preview environments
+
+on:
+  delete:
+    branches:
+      - release/*
+      - hotfix/*
+      - feature/*
+
+env:
+  RELEASE_VERSION: "latest"
+
+jobs:
+  tag:
+    name: Extract branch name
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract version from branch name (for release branches)
+        if: startsWith(github.event.pull_request.head.ref, 'release/')
+        run: |
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          VERSION=${BRANCH_NAME#release/}
+
+          echo "::set-env name=RELEASE_VERSION::$VERSION"
+      - name: Extract version from branch name (for hotfix branches)
+        if: startsWith(github.event.pull_request.head.ref, 'hotfix/')
+        run: |
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          VERSION=${BRANCH_NAME#hotfix/}
+
+          echo "::set-env name=RELEASE_VERSION::$VERSION"
+      - name: Extract version from branch name (for feature branches)
+        if: startsWith(github.event.pull_request.head.ref, 'feature/')
+        run: |
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          VERSION=${BRANCH_NAME#feature/}
+
+          echo "::set-env name=RELEASE_VERSION::$VERSION"
+      - name: Create namespace for preview environment
+        run: kubectl delete namespace ${{ env.RELEASE_VERSION }}
