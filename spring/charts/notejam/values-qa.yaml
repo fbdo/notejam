@@ -1,5 +1,6 @@
 image:
   repository: fbdo/notejam
+  pullPolicy: Always
 
 labels:
   env: "qa"
