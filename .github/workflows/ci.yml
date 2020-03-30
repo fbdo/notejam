@@ -13,7 +13,7 @@ env:
 
 jobs:
   ci:
-    name: Extract build tag
+    name: Build and publish Docker image
     runs-on: ubuntu-latest
     steps:
       - name: Dump GitHub context
@@ -41,24 +41,24 @@ jobs:
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
         run: echo "$MATRIX_CONTEXT"
       - name: Extract version from branch name (for release branches)
-        if: startsWith(github.ref, 'release/')
+        if: startsWith(github.ref, 'refs/heads/release/')
         run: |
           BRANCH_NAME="${{ github.ref }}"
-          VERSION=${BRANCH_NAME#release/}
+          VERSION=${BRANCH_NAME#refs/heads/release/}
 
           echo "::set-env name=RELEASE_VERSION::$VERSION"
       - name: Extract version from branch name (for hotfix branches)
-        if: startsWith(github.ref, 'hotfix/')
+        if: startsWith(github.ref, 'refs/heads/hotfix/')
         run: |
           BRANCH_NAME="${{ github.ref }}"
-          VERSION=${BRANCH_NAME#hotfix/}
+          VERSION=${BRANCH_NAME#refs/heads/hotfix/}
 
           echo "::set-env name=RELEASE_VERSION::$VERSION"
       - name: Extract version from branch name (for feature branches)
-        if: startsWith(github.ref, 'feature/')
+        if: startsWith(github.ref, 'refs/heads/feature/')
         run: |
           BRANCH_NAME="${{ github.ref }}"
-          VERSION=${BRANCH_NAME#feature/}
+          VERSION=${BRANCH_NAME#refs/heads/feature/}
 
           echo "::set-env name=RELEASE_VERSION::$VERSION"
       - uses: actions/checkout@v1
