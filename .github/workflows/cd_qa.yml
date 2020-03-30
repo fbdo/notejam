@@ -8,7 +8,7 @@ on:
       - feature/*
 
 jobs:
-  tag:
+  release:
     name: Extract build tag
     runs-on: ubuntu-latest
     steps:
@@ -33,11 +33,6 @@ jobs:
           VERSION=${BRANCH_NAME#feature/}
 
           echo "::set-env name=RELEASE_VERSION::$VERSION"
-  deploy_helm:
-    runs-on: ubuntu-latest
-    name: Deploy helm chart
-    needs: tag
-    steps:
       - name: "Checkout"
         uses: actions/checkout@master
       - name: "Setup GCP credentials"

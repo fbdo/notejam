@@ -12,7 +12,7 @@ env:
   RELEASE_VERSION: "latest"
 
 jobs:
-  tag:
+  ci:
     name: Extract build tag
     runs-on: ubuntu-latest
     steps:
@@ -37,11 +37,6 @@ jobs:
           VERSION=${BRANCH_NAME#feature/}
 
           echo "::set-env name=RELEASE_VERSION::$VERSION"
-  build:
-    runs-on: ubuntu-latest
-    needs: tag
-    name: Test and package
-    steps:
       - uses: actions/checkout@v1
       - uses: actions/cache@v1
         with:
@@ -55,21 +50,6 @@ jobs:
           java-version: 8
       - name: Test and package project
         run: mvn -f spring/pom.xml package
-      - name: Upload Maven build artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: artifact
-          path: spring/target/app.jar
-  publish_docker:
-    runs-on: ubuntu-latest
-    needs: build
-    name: Build Docker container and publish to registry
-    steps:
-      - uses: actions/checkout@v1
-      - name: Download Maven build artifact
-        uses: actions/download-artifact@v1
-        with:
-          name: artifact
       - name: Build Docker image
         run: |
           mkdir -p spring/target
