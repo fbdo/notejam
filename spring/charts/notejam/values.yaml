@@ -39,5 +39,5 @@ mail:
   username: notejam@notejam.com
   password: ""
   port: 587
-  smtp-auth: true
-  smtp-starttls-enabled: true
+  smtpAuth: true
+  smtpStarttlsEnabled: true
