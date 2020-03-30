@@ -1,4 +1,4 @@
-name: Create namespaces preview environments
+name: Delete namespaces preview environments
 
 on:
   delete:

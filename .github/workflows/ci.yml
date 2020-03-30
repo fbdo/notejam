@@ -16,24 +16,48 @@ jobs:
     name: Extract build tag
     runs-on: ubuntu-latest
     steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - name: Dump job context
+        env:
+          JOB_CONTEXT: ${{ toJson(job) }}
+        run: echo "$JOB_CONTEXT"
+      - name: Dump steps context
+        env:
+          STEPS_CONTEXT: ${{ toJson(steps) }}
+        run: echo "$STEPS_CONTEXT"
+      - name: Dump runner context
+        env:
+          RUNNER_CONTEXT: ${{ toJson(runner) }}
+        run: echo "$RUNNER_CONTEXT"
+      - name: Dump strategy context
+        env:
+          STRATEGY_CONTEXT: ${{ toJson(strategy) }}
+        run: echo "$STRATEGY_CONTEXT"
+      - name: Dump matrix context
+        env:
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}
+        run: echo "$MATRIX_CONTEXT"
       - name: Extract version from branch name (for release branches)
-        if: startsWith(github.event.pull_request.head.ref, 'release/')
+        if: startsWith(github.ref, 'release/')
         run: |
-          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          BRANCH_NAME="${{ github.ref }}"
           VERSION=${BRANCH_NAME#release/}
 
           echo "::set-env name=RELEASE_VERSION::$VERSION"
       - name: Extract version from branch name (for hotfix branches)
-        if: startsWith(github.event.pull_request.head.ref, 'hotfix/')
+        if: startsWith(github.ref, 'hotfix/')
         run: |
-          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          BRANCH_NAME="${{ github.ref }}"
           VERSION=${BRANCH_NAME#hotfix/}
 
           echo "::set-env name=RELEASE_VERSION::$VERSION"
       - name: Extract version from branch name (for feature branches)
-        if: startsWith(github.event.pull_request.head.ref, 'feature/')
+        if: startsWith(github.ref, 'feature/')
         run: |
-          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          BRANCH_NAME="${{ github.ref }}"
           VERSION=${BRANCH_NAME#feature/}
 
           echo "::set-env name=RELEASE_VERSION::$VERSION"
@@ -51,10 +75,7 @@ jobs:
       - name: Test and package project
         run: mvn -f spring/pom.xml package
       - name: Build Docker image
-        run: |
-          mkdir -p spring/target
-          mv artifact/app.jar spring/target
-          docker build -t fbdo/notejam:${{ env.RELEASE_VERSION }} spring
+        run: docker build -t fbdo/notejam:${{ env.RELEASE_VERSION }} spring
       - name: Publish Docker image to registry
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
