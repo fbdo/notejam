@@ -23,8 +23,47 @@ spec:
         - name: notejam
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- if .Values.externalDatabase.enabled }}
           env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: {{ .Values.labels.env }}
+            {{- if .Values.mail.enabled }}
+            - name: SPRING_MAIL_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: mail-secret
+                  key: host
+            - name: SPRING_MAIL_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: mail-secret
+                  key: port
+            - name: SPRING_MAIL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mail-secret
+                  key: username
+            - name: SPRING_MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mail-secret
+                  key: password
+            - name: SPRING_MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mail-secret
+                  key: password
+            - name: SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH
+              valueFrom:
+                secretKeyRef:
+                  name: mail-secret
+                  key: smtp-auth
+            - name: SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH
+              valueFrom:
+                secretKeyRef:
+                  name: mail-secret
+                  key: smtp-starttls-enabled
+            {{- end }}
+            {{- if .Values.externalDatabase.enabled }}
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -42,7 +81,7 @@ spec:
                   key: host
             - name: SPRING_DATASOURCE_URL
               value: jdbc:mysql://$(DATABASE_HOST)/{{ .Values.labels.env }}
-          {{- end }}
+            {{- end }}
           ports:
             - containerPort: 8000
               name: http
