@@ -3,7 +3,7 @@ image:
   pullPolicy: Always
 
 labels:
-  env: "qa"
+  env: "dev"
 
 externalDatabase:
   enabled: false
