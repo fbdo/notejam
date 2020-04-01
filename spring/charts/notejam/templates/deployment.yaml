@@ -83,7 +83,7 @@ spec:
               value: jdbc:mysql://$(DATABASE_HOST)/{{ .Values.labels.env }}
             {{- end }}
           ports:
-            - containerPort: 8000
+            - containerPort: 8080
               name: http
               protocol: TCP
           resources:
@@ -103,5 +103,5 @@ spec:
             httpGet:
               path: /health
               port: 8080
-            initialDelaySeconds: 20
+            initialDelaySeconds: 30
             periodSeconds: 5
