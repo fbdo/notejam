@@ -15,11 +15,11 @@ service:
 
 resources:
   limits:
-    cpu: 2000m
+    cpu: 4000m
     memory: 1024Mi
   requests:
     memory: 512Mi
-    cpu: 1000m
+    cpu: 500m
 
 hpa:
   cpuAverageUtilization: 65
