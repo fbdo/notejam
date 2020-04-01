@@ -4,4 +4,4 @@ USER spring:spring
 ARG JAR_FILE=target/app.jar
 EXPOSE 8080
 COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java", "-XX:+UseContainerSupport", "-XX:InitialRAMPercentage=40.0", "-XX:MaxRAMPercentage=80.0", "-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+ENTRYPOINT ["java", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-XX:MaxRAMFraction=2","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
