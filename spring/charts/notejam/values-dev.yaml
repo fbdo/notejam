@@ -11,3 +11,7 @@ externalDatabase:
 
 mail:
   enabled: true
+
+hpa:
+  minReplicas: 1
+  maxReplicas: 1

@@ -8,3 +8,14 @@ labels:
 
 externalDatabase:
   enabled: false
+
+mail:
+  enabled: false
+
+resources:
+  limits:
+    cpu: 4
+    memory: 512Mi
+  requests:
+    memory: 256Mi
+    cpu: 1
