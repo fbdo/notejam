@@ -48,8 +48,9 @@ jobs:
           export_default_credentials: true
       - name: Deploy Helm chart to Dev
         run: |
+          NAMESPACE="${RELEASE_VERSION//[.]/-}"
           gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
           gcloud container clusters get-credentials notejam --zone=europe-west3 --project ${{ secrets.GCP_PROJECT_ID }}
           curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
-          kubectl delete namespace ${{ env.RELEASE_VERSION }}
+          kubectl delete namespace $NAMESPACE
           helm upgrade -f spring/charts/notejam/values-dev.yaml notejam spring/charts/notejam --install --namespace=dev --set image.tag=${{ env.RELEASE_VERSION }} --set mail.username=${{ secrets.SMTP_USERNAME }} --set mail.password=${{ secrets.SMTP_PASSWORD }}

@@ -65,8 +65,9 @@ jobs:
           service_account_email: ${{ secrets.GCP_SA_EMAIL }}
           service_account_key: ${{ secrets.GOOGLE_CREDENTIALS }}
           export_default_credentials: true
-      - name: Create namespace for preview environment
+      - name: Delete namespace for preview environment
         run: |
+          NAMESPACE="${RELEASE_VERSION//[.]/-}"
           gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
           gcloud container clusters get-credentials notejam --zone=europe-west3 --project ${{ secrets.GCP_PROJECT_ID }}
-          kubectl delete namespace ${{ env.RELEASE_VERSION }}
+          kubectl delete namespace $NAMESPACE
