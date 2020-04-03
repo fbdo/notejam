@@ -44,5 +44,5 @@ jobs:
       - name: Create namespace for preview environment
         run: |
           gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
-          gcloud container clusters get-credentials notejam --zone=europe-west3-a --project ${{ secrets.GCP_PROJECT_ID }}
+          gcloud container clusters get-credentials notejam --zone=europe-west3 --project ${{ secrets.GCP_PROJECT_ID }}
           kubectl create namespace ${{ env.RELEASE_VERSION }}

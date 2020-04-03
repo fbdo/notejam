@@ -15,15 +15,17 @@ service:
 
 resources:
   limits:
-    cpu: 4000m
-    memory: 1024Mi
+    cpu: 4
+    memory: 4Gi
   requests:
-    memory: 512Mi
-    cpu: 500m
+    memory: 4Gi
+    cpu: 4
 
 hpa:
+  minReplicas: 3
+  maxReplicas: 6
   cpuAverageUtilization: 65
-  memoryTargetAverageValue: "512Mi"
+  memoryTargetAverageValue: 2500Mi
 
 externalDatabase:
   enabled: true
