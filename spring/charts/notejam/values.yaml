@@ -22,8 +22,8 @@ resources:
     cpu: 4
 
 hpa:
-  minReplicas: 3
-  maxReplicas: 6
+  minReplicas: 1
+  maxReplicas: 3
   cpuAverageUtilization: 65
   memoryTargetAverageValue: 2500Mi
 
