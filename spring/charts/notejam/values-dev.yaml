@@ -14,7 +14,7 @@ mail:
 
 resources:
   limits:
-    cpu: 4
+    cpu: 2
     memory: 2Gi
   requests:
     memory: 1Gi
@@ -24,4 +24,4 @@ hpa:
   minReplicas: 1
   maxReplicas: 2
   cpuAverageUtilization: 65
-  memoryTargetAverageValue: 2500Mi
+  memoryTargetAverageValue: 1Gi
