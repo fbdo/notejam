@@ -67,7 +67,6 @@ jobs:
           export_default_credentials: true
       - name: Delete namespace for preview environment
         run: |
-          NAMESPACE="${RELEASE_VERSION//[.]/-}"
           gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
           gcloud container clusters get-credentials notejam --zone=europe-west3 --project ${{ secrets.GCP_PROJECT_ID }}
-          kubectl delete namespace $NAMESPACE
+          kubectl delete namespace $RELEASE_VERSION
