@@ -15,6 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true # only merged pull requests must trigger this job
     steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
       - name: Extract version from branch name (for release branches)
         if: startsWith(github.event.pull_request.head.ref, 'refs/heads/release/')
         run: |
