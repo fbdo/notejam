@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - feature/*
-      - hotfix/*
-      - release/*
       - develop
 
 env:
