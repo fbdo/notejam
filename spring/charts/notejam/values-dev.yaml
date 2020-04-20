@@ -14,7 +14,7 @@ mail:
 
 resources:
   limits:
-    cpu: 2
+    cpu: 4
     memory: 2Gi
   requests:
     memory: 1Gi
