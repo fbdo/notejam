@@ -16,8 +16,8 @@ resources:
     cpu: 4
     memory: 4Gi
   requests:
-    memory: 1Gi
-    cpu: 1
+    memory: 2Gi
+    cpu: 2
 
 hpa:
   minReplicas: 1
