@@ -3,8 +3,9 @@ name: Continuous Deployment notejam app Prod
 on:
   pull_request:
     branches:
-      - release/*
       - hotfix/*
+      - release/*
+      - master
     types:
       - closed
 
