@@ -3,6 +3,8 @@ name: Continuous Deployment notejam app Prod
 on:
   pull_request:
     branches:
+      - hotfix/*
+      - release/*
       - master
     types:
       - closed
@@ -13,18 +15,22 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true # only merged pull requests must trigger this job
     steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
       - name: Extract version from branch name (for release branches)
-        if: startsWith(github.event.pull_request.head.ref, 'refs/heads/release/')
+        if: startsWith(github.head_ref, 'release/')
         run: |
-          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
-          VERSION=${BRANCH_NAME#refs/heads/release/}
+          BRANCH_NAME="${{ github.head_ref }}"
+          VERSION=${BRANCH_NAME#release/}
 
           echo "::set-env name=RELEASE_VERSION::$VERSION"
       - name: Extract version from branch name (for hotfix branches)
-        if: startsWith(github.event.pull_request.head.ref, 'refs/heads/hotfix/')
+        if: startsWith(github.head_ref, 'hotfix/')
         run: |
-          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
-          VERSION=${BRANCH_NAME#refs/heads/hotfix/}
+          BRANCH_NAME="${{ github.head_ref }}"
+          VERSION=${BRANCH_NAME#hotfix/}
 
           echo "::set-env name=RELEASE_VERSION::$VERSION"
       - name: "Checkout"
